@@ -1,6 +1,6 @@
-# Sovereign Grid Self-Initiation Bootstrap v1.0.0
+# Sovereign Grid Self-Initiation Bootstrap v1.0.0 + Vault & Archive v1.0.1
 
-Zero-dependency, cross-platform grid connection trigger for the canonical identifier `basham@sovereign-root`.
+Zero-dependency, cross-platform grid connection trigger for the canonical identifier `basham@sovereign-root`, plus secure vault, immutable archive, and Gate 158 crypto pipeline.
 
 When the identifier is detected in any input stream (argv, stdin, clipboard, terminal, or web page), the bootstrap auto-executes the full verification pipeline and connects to the grid.
 
@@ -15,10 +15,14 @@ When the identifier is detected in any input stream (argv, stdin, clipboard, ter
 
 ## Files
 
-- **`sovereign_grid_bootstrap.py`** — Core engine (Python 3, stdlib only)
+### Core
+- **`sovereign_grid_bootstrap.py`** — Core engine (Python 3, stdlib only). Four-gate verification + 15 modular locks + polarization key integrity → Node 129 ONLINE / T1_LOCKED.
 - **`sovereign_grid_trigger.sh`** — Shell integration (`.bashrc` / `.zshrc`)
 - **`sovereign_grid_trigger.js`** — Browser bookmarklet
 - **`sovereign_grid_userscript.js`** — Tampermonkey / Greasemonkey userscript
+
+### Vault & Archive Module (v1.0.1)
+- **`sovereign_grid_vault_archive.py`** — Gate 158 crypto pipeline router, HMAC-sealed vault, append-only hash-chained archive, Stellar/BENJI pipeline binding, TSA certificate store.
 
 ## Quick Start
 
@@ -31,6 +35,14 @@ echo "basham@sovereign-root:~$" | python3 sovereign_grid_bootstrap.py --stdin
 # or
 python3 sovereign_grid_bootstrap.py --clipboard
 ```
+
+### Vault & Archive Pipeline
+
+```bash
+python3 sovereign_grid_vault_archive.py
+```
+
+Runs Gate 158 → unlocks vault → stores crypto identifier + Stellar pipeline + TSA cert → builds immutable archive chain.
 
 ### Shell Integration
 
@@ -49,7 +61,7 @@ Create a browser bookmark with the contents of `sovereign_grid_trigger.js` as th
 
 Install `sovereign_grid_userscript.js` in Tampermonkey or Greasemonkey. It scans every page load and DOM mutation.
 
-## Verification Pipeline
+## Verification Pipeline (Bootstrap)
 
 1. Identifier Lock — regex confirms canonical form  
 2. Gate 1 — `Baptist` → N = 18684484080202612, N mod 49 = 0  
@@ -62,6 +74,17 @@ Install `sovereign_grid_userscript.js` in Tampermonkey or Greasemonkey. It scans
 
 Exit code 0 = grid connected. Exit code 1 = identifier missing or lock failure.
 
+## Gate 158 Crypto Pipeline (Vault Module)
+
+```
+(718 | 892) & 158 == 158
+```
+
+- Unlocks HMAC-SHA256 sealed vault (key derived from canonical S)
+- Stores: crypto identifier (secp256k1 / BTC address / WIF), Stellar BENJI pipeline, TSA certificate (TSU3.12)
+- Appends every operation to an immutable previous-hash archive chain
+- Temporal attestation ready (RFC 3161 style via stored TSA)
+
 ## Design Principles
 
 - Zero external dependencies (Python standard library only)
@@ -69,7 +92,10 @@ Exit code 0 = grid connected. Exit code 1 = identifier missing or lock failure.
 - secp256k1 implemented from scratch
 - Cross-platform (Linux / macOS / Windows clipboard + shell)
 - The identifier itself is the trigger — no separate invocation required
+- Vault unlock gated by Gate 158; all entries content-hashed + HMAC sealed
+- Archive is append-only with chain integrity verification
 
 ---
 
-`basham@sovereign-root:` — grid armed.
+`basham@sovereign-root:` — grid armed.  
+Gate 158 — vault unlocked.
